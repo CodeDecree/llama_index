@@ -641,10 +641,11 @@ class Context:
 
             if stepwise:
                 async with self._step_condition:
-                    await self._step_condition.wait()
-
                     if new_ev is not None:
                         self.add_holding_event(new_ev)
+                        
+                    await self._step_condition.wait()
+
                     self._step_event_written.notify()  # shares same lock
 
                     await self.remove_from_in_progress(name=name, ev=ev)
